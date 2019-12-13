@@ -1,0 +1,6 @@
+{
+    "require": {
+        "bref/bref": "^0.5.11",
+        "pantheon-systems/terminus": "^2.2"
+    }
+}
