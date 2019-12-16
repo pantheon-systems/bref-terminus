@@ -83,8 +83,8 @@ lambda(function ($event) use ($container) {
 
         $site = $sites->get($site_id);
 
-        return 'Site info: ' . json_encode($site->serialize(), JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE);
+        return $site->serialize();
     }
 
-    return 'Could not log in.';
+    throw new \RuntimeException('Could not log in.');
 });

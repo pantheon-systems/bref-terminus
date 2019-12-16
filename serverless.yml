@@ -5,6 +5,16 @@ provider:
     region: us-east-1
     runtime: provided
     profile: psmu
+    memorySize: 512
+
+package:
+  exclude:
+    - "events/**"
+    - ".git/"
+    - "./README.md"
+    - "./env.php.dist"
+    - "./composer.json"
+    - "./composer.lock"
 
 plugins:
     - ./vendor/bref/bref
