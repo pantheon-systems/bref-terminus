@@ -1,0 +1,49 @@
+{
+  "require": {
+    "php": ">=7.2.9",
+    "aws/aws-sdk-php": "^3.132",
+    "bref/bref": "^0.5.11",
+    "pantheon-systems/terminus": "^2.4",
+    "vlucas/phpdotenv": "^4.1"
+  },
+  "require-dev": {
+    "phpunit/phpunit": "^6",
+    "php-coveralls/php-coveralls": "^1",
+    "squizlabs/php_codesniffer": "^2.7"
+  },
+  "autoload": {
+    "psr-4": {
+      "Pantheon\\Autopilot\\Terminus\\": "src"
+    }
+  },
+  "autoload-dev": {
+    "psr-4": {
+      "Pantheon\\Autopilot\\Terminus\\Tests\\": "tests",
+      "Pantheon\\Autopilot\\Terminus\\Tests\\Integration\\": "tests/integration",
+      "Pantheon\\Autopilot\\Terminus\\Tests\\Unit\\": "tests/unit"
+    }
+  },
+  "config": {
+    "optimize-autoloader": true,
+    "sort-packages": true,
+    "platform": {
+      "php": "7.2.9"
+    }
+  },
+  "scripts": {
+    "cbf": "phpcbf -n --standard=tests/config/linting_ruleset.xml tests src",
+    "cs": "phpcs -n --standard=tests/config/linting_ruleset.xml tests src",
+    "lint": [
+      "find src tests -name '*.php' -print0 | xargs -0 -n1 php -l"
+    ],
+    "phpunit": "phpunit --colors=always -c tests/config/phpunit.xml.dist --debug",
+    "unit": "composer phpunit -- --testsuite unit",
+    "integration": "composer phpunit -- --testsuite integration",
+    "test": [
+      "@lint",
+      "@unit",
+      "@integration",
+      "@cs"
+    ]
+  }
+}

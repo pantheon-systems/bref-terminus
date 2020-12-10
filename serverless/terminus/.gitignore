@@ -1,0 +1,5 @@
+# Former location of local secrets for development and ad-hoc testing.
+# Keep this ignored for now so that active credentials in a stale file are
+# not accidentally committed.
+/env.php
+

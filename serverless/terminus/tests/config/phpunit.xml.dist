@@ -1,0 +1,39 @@
+<phpunit
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:noNamespaceSchemaLocation="../../vendor/phpunit/phpunit/phpunit.xsd"
+    backupGlobals="false"
+    backupStaticAttributes="false"
+    beStrictAboutChangesToGlobalState="true"
+    beStrictAboutOutputDuringTests="true"
+    beStrictAboutTestsThatDoNotTestAnything="true"
+    bootstrap="../../vendor/autoload.php"
+    colors="true"
+    columns="max"
+    convertErrorsToExceptions="true"
+    convertNoticesToExceptions="true"
+    convertWarningsToExceptions="true"
+    processIsolation="false"
+    stopOnError="false"
+    stopOnFailure="false"
+    stopOnRisky="false"
+    verbose="true"
+  >
+  <testsuites>
+    <testsuite name="unit">
+      <directory suffix="Test.php">../unit/</directory>
+    </testsuite>
+    <testsuite name="integration">
+      <directory suffix="TestCase.php">../integration/</directory>
+      <directory suffix="Test.php">../integration/</directory>
+    </testsuite>
+  </testsuites>
+  <filter>
+    <whitelist>
+        <directory suffix=".php">../../src/</directory>
+        <directory suffix=".php">../../handlers/</directory>
+        <exclude>
+            <directory suffix=".php">../../vendor/</directory>
+        </exclude>
+    </whitelist>
+  </filter>    
+</phpunit>

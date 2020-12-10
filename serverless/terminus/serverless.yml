@@ -1,0 +1,225 @@
+service: terminus
+
+provider:
+  name: aws
+  region: us-west-2
+  runtime: provided
+  memorySize: 1024
+  timeout: 90
+  environment:
+    TERMINUS_SECRET_NAME: '_PUT_YOUR_AWS_SECRET_MANAGER_SECRET_NAME_HERE_'
+    TERMINUS_HOST: '${self:custom.SANDBOX_TERMINUS_HOST.${opt:stage},self:custom.SANDBOX_TERMINUS_HOST.production}'
+  tags:
+    Project: 'autopilot'
+  iamRoleStatements:
+    - Effect: 'Allow'
+      Action:
+        - 'secretsmanager:GetSecretValue'
+        - 'secretsmanager:DescribeSecret'
+      Resource: 'arn:aws:secretsmanager:${opt:region, self:provider.region}:_PUT_YOUR_AWS_ACCOUNT_ID_HERE_:secret:${self:provider.environment.TERMINUS_SECRET_NAME}-*'
+
+custom:
+  SANDBOX_TERMINUS_HOST:
+    otter: 'hermes.sandbox-otter.sbx02.pantheon.io'
+    production: ''
+
+  bref_layer_arn: 'arn:aws:lambda:${opt:region, self:provider.region}:209497400698:layer:php-73:7'
+  terminus_docs_url: 'https://pantheon.io/docs/terminus/commands'
+package:
+  include:
+    - './.env'
+  exclude:
+    - './README.md'
+    - './dot-env.dist'
+    - './composer.json'
+    - './composer.lock'
+    - './.gitignore'
+    - 'tests/**'
+
+plugins:
+  - ./vendor/bref/bref
+
+functions:
+  apply_upstream_updates:
+    handler: entrypoints/apply-upstream-updates.php
+    description: 'terminus upstream:updates:apply | ${self:custom.terminus_docs_url}'
+    layers:
+      - ${self:custom.bref_layer_arn}
+    tags:
+      Async: 'true'
+  clear_env_cache:
+    handler: entrypoints/clear-env-cache.php
+    description: 'terminus env:clear-cache | ${self:custom.terminus_docs_url}'
+    layers:
+      - ${self:custom.bref_layer_arn}
+    tags:
+      Async: 'false'
+  clone_database:
+    handler: entrypoints/clone-database.php
+    description: 'terminus env:clone-content --db-only | ${self:custom.terminus_docs_url}'
+    layers:
+      - ${self:custom.bref_layer_arn}
+    tags:
+      Async: 'true'
+  clone_files:
+    handler: entrypoints/clone-files.php
+    description: 'terminus env:clone-content --files-only | ${self:custom.terminus_docs_url}'
+    layers:
+      - ${self:custom.bref_layer_arn}
+    tags:
+      Async: 'true'
+  connection_info:
+    handler: entrypoints/connection-info.php
+    description: 'terminus connection:info | ${self:custom.terminus_docs_url}'
+    layers:
+      - ${self:custom.bref_layer_arn}
+    tags:
+      Async: 'false'
+  create_backup:
+    handler: entrypoints/create-backup.php
+    description: 'terminus backup:create | ${self:custom.terminus_docs_url}'
+    layers:
+      - ${self:custom.bref_layer_arn}
+    tags:
+      Async: 'true'
+  create_env:
+    handler: entrypoints/create-env.php
+    description: 'terminus env:create | ${self:custom.terminus_docs_url}'
+    layers:
+      - ${self:custom.bref_layer_arn}
+    tags:
+      Async: 'true'
+  delete_env:
+    handler: entrypoints/delete-env.php
+    description: 'terminus env:delete | ${self:custom.terminus_docs_url}'
+    layers:
+      - ${self:custom.bref_layer_arn}
+    tags:
+      Async: 'true'
+  deploy_env:
+    handler: entrypoints/deploy-env.php
+    description: 'terminus env:deploy | ${self:custom.terminus_docs_url}'
+    layers:
+      - ${self:custom.bref_layer_arn}
+    tags:
+      Async: 'true'
+  disable_lock:
+    handler: entrypoints/disable-lock.php
+    description: 'terminus lock:disable | ${self:custom.terminus_docs_url}'
+    layers:
+      - ${self:custom.bref_layer_arn}
+    tags:
+      Async: 'false'
+  enable_lock:
+    handler: entrypoints/enable-lock.php
+    description: 'terminus lock:enable | ${self:custom.terminus_docs_url}'
+    layers:
+      - ${self:custom.bref_layer_arn}
+    tags:
+      Async: 'false'
+  env_commit:
+    timeout: 120
+    handler: entrypoints/env-commit.php
+    description: 'terminus env:commit | ${self:custom.terminus_docs_url}'
+    layers:
+      - ${self:custom.bref_layer_arn}
+    tags:
+      Async: 'false'
+  env_diffstat:
+    handler: entrypoints/env-diffstat.php
+    description: 'terminus env:diffstat | ${self:custom.terminus_docs_url}'
+    layers:
+      - ${self:custom.bref_layer_arn}
+    tags:
+      Async: 'false'
+  env_info:
+    handler: entrypoints/env-info.php
+    description: 'terminus env:info | ${self:custom.terminus_docs_url}'
+    layers:
+      - ${self:custom.bref_layer_arn}
+    tags:
+      Async: 'false'
+  list_domains:
+    handler: entrypoints/list-domains.php
+    description: 'terminus domain:list | ${self:custom.terminus_docs_url}'
+    layers:
+      - ${self:custom.bref_layer_arn}
+    tags:
+      Async: 'false'
+  list_multidevs:
+    handler: entrypoints/list-multidevs.php
+    description: 'terminus multidev:list | ${self:custom.terminus_docs_url}'
+    layers:
+      - ${self:custom.bref_layer_arn}
+    tags:
+      Async: 'false'
+  list_workflows:
+    handler: entrypoints/list-workflows.php
+    description: 'terminus workflow:list | ${self:custom.terminus_docs_url}'
+    layers:
+      - ${self:custom.bref_layer_arn}
+    tags:
+      Async: 'false'
+  lock_info:
+    handler: entrypoints/lock-info.php
+    description: 'terminus lock:info | ${self:custom.terminus_docs_url}'
+    layers:
+      - ${self:custom.bref_layer_arn}
+    tags:
+      Async: 'false'
+  merge_to_dev:
+    handler: entrypoints/merge-to-dev.php
+    description: 'terminus env:merge-to-dev | ${self:custom.terminus_docs_url}'
+    layers:
+      - ${self:custom.bref_layer_arn}
+    tags:
+      Async: 'true'
+  set_connection:
+    handler: entrypoints/set-connection.php
+    description: 'terminus connection:set | ${self:custom.terminus_docs_url}'
+    layers:
+      - ${self:custom.bref_layer_arn}
+    tags:
+      Async: 'false'
+  site_info:
+    handler: entrypoints/site-info.php
+    description: 'terminus site:info | ${self:custom.terminus_docs_url}'
+    layers:
+      - ${self:custom.bref_layer_arn}
+    tags:
+      Async: 'false'
+  upstream_updates_list:
+    handler: entrypoints/upstream-updates-list.php
+    description: 'List of available upstream updates for an environment'
+    layers:
+      - ${self:custom.bref_layer_arn}
+    tags:
+      Async: 'false'
+  upstream_updates_status:
+    handler: entrypoints/upstream-updates-status.php
+    description: 'terminus upstream:updates:status | ${self:custom.terminus_docs_url}'
+    layers:
+      - ${self:custom.bref_layer_arn}
+    tags:
+      Async: 'false'
+  wake_env:
+    handler: entrypoints/wake-env.php
+    description: 'terminus env:wake | ${self:custom.terminus_docs_url}'
+    layers:
+      - ${self:custom.bref_layer_arn}
+    tags:
+      Async: 'false'
+  whoami:
+    handler: entrypoints/whoami.php
+    description: 'terminus whoami | ${self:custom.terminus_docs_url}'
+    layers:
+      - ${self:custom.bref_layer_arn}
+    tags:
+      Async: 'false'
+  workflow_info_status:
+    handler: entrypoints/workflow-info-status.php
+    description: 'terminus workflow:info:status | ${self:custom.terminus_docs_url}'
+    layers:
+      - ${self:custom.bref_layer_arn}
+    tags:
+      Async: 'false'
