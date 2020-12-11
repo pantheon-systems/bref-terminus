@@ -4,7 +4,6 @@ provider:
     name: aws
     region: us-east-1
     runtime: provided
-    profile: psmu
     memorySize: 512
 
 package:
