@@ -23,17 +23,17 @@ TODO: For production `TERMINUS_SESSION_JWT`, rotate with cron Circle CI workflow
 
 TODO: Stop using Terminus
 
-[1]: https://getpantheon.atlassian.net/wiki/spaces/VULCAN/pages/144801793/Pantheon+Sandbox+Environments+formerly+Onebox#PantheonSandboxEnvironments(formerlyOnebox)-UsingTerminuswithyourSandbox
+[1]: 
 
 ### Circle CI Terminus Integration Tests
 
 The Circle CI tests test against fixture sites on Production, using a machine token to generate the session. The TERMINUS_TOKEN environment variable in Circle CI should be added to the organization [CI Fixtures for Projects][2] to authenticate access to the following sites:
 
-- [ci-drops-8-autopilot](https://admin.dashboard.pantheon.io/sites/7ad15379-cad6-43ff-850e-0c8ef97a83a9)
-- [CI WordPress Autopilot](https://admin.dashboard.pantheon.io/sites/cafd7a3a-2358-471c-abe6-258033e22617)
-- [CI Empty Autopilot](https://admin.dashboard.pantheon.io/sites/b1bbec4f-1377-44d6-8fc9-a289e6447fa1)
+- [ci-drops-8-autopilot]
+- [CI WordPress Autopilot]
+- [CI Empty Autopilot]
 
-[2]: https://admin.dashboard.pantheon.io/organizations/5ae1fa30-8cc4-4894-8ca9-d50628dcba17
+[2]: 
 
 ### Setting "TERMINUS_HOST" in the Lambda Runtime
 

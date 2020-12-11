@@ -22,7 +22,7 @@ else
 	STAGE_FLAG="--stage ${stageParam}"
 fi
 
-
+SITE_ID=''  # Pantheon site ID to run tests against
 actual=$(
 	serverless invoke ${LOCAL} \
 	-f whoami ${STAGE_FLAG}
@@ -33,21 +33,21 @@ assert_regex '"id":\s?"........-....-....-....-............"' "$actual" "checked
 actual=$(
 	serverless invoke ${LOCAL} \
 	-f apply_upstream_updates ${STAGE_FLAG}\
-	-d '{"site":"aa3fd745-bbff-461a-a6d3-8dbb7d20b42e","env":"dev"}'
+	-d '{"site":"$SITE_ID_1","env":"dev"}'
 )
 assert_regex '........-....-....-....-............' "$actual" "applied upstream updates to dev environment on fixture site"
 
 actual=$(
 	serverless invoke ${LOCAL} \
 	-f connection_info ${STAGE_FLAG}\
-	-d '{"site":"aa3fd745-bbff-461a-a6d3-8dbb7d20b42e","env":"dev"}'
+	-d '{"site":"$SITE_ID_1","env":"dev"}'
 )
 assert_regex '"sftp_host":\s?"appserver\.dev\.........-....-....-....-............\.drush\.in"' "${actual}" "connectioninfo returned information about fixture site"
 
 actual=$(
 	serverless invoke ${LOCAL} \
 	-f create_backup ${STAGE_FLAG}\
-	-d '{"site":"aa3fd745-bbff-461a-a6d3-8dbb7d20b42e","env":"dev"}'
+	-d '{"site":"$SITE_ID_1","env":"dev"}'
 )
 assert_regex '........-....-....-....-............' "$actual" "created a backup of the dev environment on fixture site"
 
@@ -60,21 +60,21 @@ fi
 actual=$(
 	serverless invoke ${LOCAL} \
 	-f create_env ${STAGE_FLAG}\
-	-d '{"site":"aa3fd745-bbff-461a-a6d3-8dbb7d20b42e","source":"dev","target":"func-test"}'
+	-d '{"site":"$SITE_ID_1","source":"dev","target":"func-test"}'
 )
 assert_regex '........-....-....-....-............' "$actual" "created the func-test environment on fixture site"
 
 actual=$(
 	serverless invoke ${LOCAL} \
 	-f clone_database ${STAGE_FLAG}\
-	-d '{"site":"aa3fd745-bbff-461a-a6d3-8dbb7d20b42e","source":"dev","target":"func-test"}'
+	-d '{"site":"$SITE_ID","source":"dev","target":"func-test"}'
 )
 assert_regex '........-....-....-....-............' "$actual" "cloned the database from dev to func-test on a fixture site"
 
 actual=$(
 	serverless invoke ${LOCAL} \
 	-f clone_files ${STAGE_FLAG}\
-	-d '{"site":"aa3fd745-bbff-461a-a6d3-8dbb7d20b42e","source":"dev","target":"func-test"}'
+	-d '{"site":"$SITE_ID","source":"dev","target":"func-test"}'
 )
 assert_regex '........-....-....-....-............' "$actual" "cloned the files from dev to func-test on a fixture site"
 
@@ -82,30 +82,30 @@ assert_regex '........-....-....-....-............' "$actual" "cloned the files 
 actual=$(
 	serverless invoke ${LOCAL} \
 	-f delete_env ${STAGE_FLAG}\
-	-d '{"site":"aa3fd745-bbff-461a-a6d3-8dbb7d20b42e","env":"func-test"}'
+	-d '{"site":"$SITE_ID","env":"func-test"}'
 )
 assert_regex '........-....-....-....-............' "$actual" "deleted the func-test environment on a fixture site"
 
 actual=$(
 	serverless invoke ${LOCAL} \
 	-f deploy_env ${STAGE_FLAG}\
-	-d '{"site":"aa3fd745-bbff-461a-a6d3-8dbb7d20b42e","env":"dev","annotation":"Deployment from Autopilot"}'
+	-d '{"site":"$SITE_ID","env":"dev","annotation":"Deployment from Autopilot"}'
 )
 assert_regex '........-....-....-....-............' "$actual" "deploys the dev environment to test on a fixture site"
 
 actual=$(
 	serverless invoke ${LOCAL} \
 	-f merge_to_dev ${STAGE_FLAG}\
-	-d '{"site":"aa3fd745-bbff-461a-a6d3-8dbb7d20b42e","env":"func-test"}'
+	-d '{"site":"$SITE_ID","env":"func-test"}'
 )
 assert_regex '........-....-....-....-............' "$actual" "merges the func-test environment to dev on a fixture site"
 
 actual=$(
 	serverless invoke ${LOCAL} \
 	-f site_info ${STAGE_FLAG}\
-	-d '{"site":"aa3fd745-bbff-461a-a6d3-8dbb7d20b42e"}'
+	-d '{"site":"$SITE_ID"}'
 )
-assert_regex '"id":\s?"aa3fd745-bbff-461a-a6d3-8dbb7d20b42e"' "${actual}" "siteinfo returned information about fixture site"
+assert_regex '"id":\s?"$SITE_ID"' "${actual}" "siteinfo returned information about fixture site"
 
 TEST_MESSAGE="workflow info returned information about fixture site workflow"
 if [[ "${LOCAL}" == "local" ]]; then
@@ -114,7 +114,7 @@ else
 	actual=$(
 		serverless invoke ${LOCAL} \
 		-f workflow_info_status ${STAGE_FLAG}\
-		-d '{"site":"aa3fd745-bbff-461a-a6d3-8dbb7d20b42e","workflow":'"${WORKFLOW_TO_CHECK_STATUS}"'}'
+		-d '{"site":"$SITE_ID","workflow":'"${WORKFLOW_TO_CHECK_STATUS}"'}'
 	)
 	assert_regex '........-....-....-....-............' "$actual" "${TEST_MESSAGE}"
 fi
@@ -122,7 +122,7 @@ fi
 actual=$(
 	serverless invoke ${LOCAL} \
 	-f upstream_updates_status ${STAGE_FLAG}\
-	--data '{"site":"aa3fd745-bbff-461a-a6d3-8dbb7d20b42e", "env":"upd-fixture"}'
+	--data '{"site":"$SITE_ID", "env":"upd-fixture"}'
 )
 assert_regex 'outdated' "$actual" "New upstream commits found on fixture site"
 
