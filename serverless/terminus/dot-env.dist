@@ -1,0 +1,9 @@
+# Rename this file to '.env' and customize to suit for development and
+# ad-hoc testing.
+
+## Set this to your sandbox "hermes" address (or leave blank for production).
+TERMINUS_HOST=""
+
+## Copy the session JSON from ~/.terminus-sandbox/cache/session setup following "Using Terminus with your Sandbox" in the Sandbox Environment badge
+
+TERMINUS_SESSION_JWT=''
