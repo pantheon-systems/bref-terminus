@@ -22,15 +22,15 @@ abstract class AbstractHandlerTestCase extends TestCase
     const UUID_REGEXP = InvalidUuidException::UUID_REGEXP;
 
     /* Drops-8 fixture  */
-    const SITE_ID = '7ad15379-cad6-43ff-850e-0c8ef97a83a9';
-    const SITE_NAME = 'ci-drops-8-autopilot';
+    const SITE_ID = '';  // Drops-8 fixture test site ID
+    const SITE_NAME = ''; // Drops-8 fixture test site name
     const TARGET_ENV_NAME = 'integ-test';
 
     /* WordPress Fixture */
-    const SITE_ID_WORDPRESS = 'cafd7a3a-2358-471c-abe6-258033e22617';
+    const SITE_ID_WORDPRESS = ''; // Wordpress fixture site ID
 
     /* Empty Upstream Fixture */
-    const SITE_ID_EMPTY_UPSTREAM = 'b1bbec4f-1377-44d6-8fc9-a289e6447fa1';
+    const SITE_ID_EMPTY_UPSTREAM = '';  // empty upstream site ID
 
     /**
      * @var API

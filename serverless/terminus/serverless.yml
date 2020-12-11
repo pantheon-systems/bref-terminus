@@ -20,7 +20,7 @@ provider:
 
 custom:
   SANDBOX_TERMINUS_HOST:
-    otter: 'hermes.sandbox-otter.sbx02.pantheon.io'
+    otter: ''
     production: ''
 
   bref_layer_arn: 'arn:aws:lambda:${opt:region, self:provider.region}:209497400698:layer:php-73:7'
