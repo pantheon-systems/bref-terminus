@@ -1,5 +1,7 @@
 # bref-terminus
 
+[![Deprecated](https://img.shields.io/badge/Pantheon-Deprecated-yellow?logo=pantheon&color=FFDC28)](https://pantheon.io/docs/oss-support-levels#deprecated)
+
 This is a PoC that demonstrates using Terminus as a Yggdrasil client library
 from an AWS lamda function.
 
